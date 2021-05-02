@@ -1,0 +1,22 @@
+$input-padding: 10px;
+.input-container {
+    display: block;
+    position: relative;
+    margin: auto;
+    width: 50%;
+    padding: $input-padding;
+}
+
+.filter-search {
+    width: 100%;
+    color: darkgrey;
+}
+
+::ng-deep .mat-form-field-label {
+    /*change color of label*/
+    color: darkgrey !important;
+   }
+
+::ng-deep .mat-form-field-underline {
+    background-color: lightgrey !important;
+}

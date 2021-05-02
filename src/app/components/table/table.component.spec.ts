@@ -1,15 +1,18 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 import { DeviceTable } from 'src/app/models/device-table.model';
 import { Device } from 'src/app/models/device.model';
 import { DemoMaterialModule } from 'src/app/modules/material.module';
+import { FilterPipe } from 'src/app/pipes/filter.pipe';
+import { DeviceService } from 'src/app/services/device.service';
 
 import { TableComponent } from './table.component';
 
 describe('TableComponent', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
-
+  let mockService: jasmine.SpyObj<DeviceService>;
   const devicesFixture: Device[] = [
     {
       device_category: 'Wand',
@@ -46,11 +49,18 @@ describe('TableComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TableComponent ],
+      declarations: [ 
+        TableComponent, 
+        FilterPipe
+      ],
       imports: [
         DemoMaterialModule,
         HttpClientTestingModule
-      ]
+      ],
+      providers: [{
+        provide: DeviceService,
+         useValue: jasmine.createSpyObj('DeviceService', ['getAll'])
+      }]
     })
     .compileComponents();
   }));
@@ -58,6 +68,8 @@ describe('TableComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(TableComponent);
     component = fixture.componentInstance;
+    mockService = TestBed.get(DeviceService);
+    mockService.getAll.and.returnValue(of(devicesTableFixture));
     fixture.detectChanges();
   });
 
@@ -68,9 +80,8 @@ describe('TableComponent', () => {
   describe('ngOnInit', () => {
     it('should set deviceTable to response from service', () => {
       component.deviceTable = null;
-
+      component.deviceFilter = "";
       component.ngOnInit();
-
       expect(component.deviceTable).toEqual(devicesTableFixture);
     });
   });

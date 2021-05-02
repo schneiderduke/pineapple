@@ -1,0 +1,9 @@
+<mat-expansion-panel hideToggle>
+    <mat-expansion-panel-header>
+    Analytics
+    </mat-expansion-panel-header>
+    <button (click)="setupChart('model')" mat-button>Model</button>
+    <button (click)="setupChart('group')" mat-button>Group</button>
+    <button (click)="setupChart('category')" mat-button>Category</button>
+    <canvas #myChart id="myChart"></canvas>
+</mat-expansion-panel>

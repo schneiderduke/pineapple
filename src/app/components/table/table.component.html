@@ -1,13 +1,16 @@
 <div class="device-table" *ngIf="deviceTable">
+  <chart [data]="deviceTable.rows"></chart>
+  <search-bar (outputToParent)="receiveFilter($event)"></search-bar>
+  <h3>Showing {{ filteredAmount.count }} of {{ totalLength }} results</h3>
   <table class="device-table__table">
     <caption class="device-table__caption">{{ deviceTable.title }}</caption>
     <thead>
-      <th *ngFor="let header of deviceTable.headers" class="device-table__th">
+      <th *ngFor="let header of deviceTable.headers" (click)="orderByCategory(header)" class="device-table__th">
         {{ header | titlecase }}
       </th>
     </thead>
-    <tbody>
-      <tr *ngFor="let row of deviceTable.rows">
+    <tbody class = "table-custom-body">
+      <tr class = "table-custom-row" *ngFor="let row of deviceTable.rows | filter : deviceFilter : filteredAmount">
         <td *ngFor="let column of deviceTable.headers">
           {{ row[column] }}
         </td>
